@@ -18,8 +18,9 @@ class PostController extends Controller
         // API Resource
         return PostResource::collection($posts);
     }
-    public function show()
+    public function show(Post $post)
     {
-        return view('posts.index');
+        return new PostResource($post->loadMissing('author:id,username'));
+
     }
 }

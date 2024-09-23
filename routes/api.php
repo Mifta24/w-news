@@ -10,6 +10,6 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('/posts',[PostController::class,'index']);
-Route::get('/posts/{id}',[PostController::class,'index']);
+Route::get('/posts/{post:id}',[PostController::class,'show']);
 // Route::get('/posts',[PostController::class,'index']);
 // Route::get('/posts',[PostController::class,'index']);
