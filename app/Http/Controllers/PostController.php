@@ -21,6 +21,29 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return new PostResource($post->loadMissing('author:id,username'));
+    }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'news_content' => 'required',
+        ]);
+        $request['author_id'] = auth()->user()->id;
+        $post = Post::create($request->all());
+
+        return new PostResource($post->loadMissing('author:id,username'));
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        $post->update($request->all());
+        return new PostResource($post->loadMissing('author:id,username'));
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return response()->json(null, 204);
     }
 }
