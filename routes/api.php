@@ -7,6 +7,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Middleware\AuthorMiddleware;
 use Illuminate\Container\Attributes\Auth;
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\CommentController;
+use App\Models\Comment;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,4 +27,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/posts', [PostController::class, 'store']);
     Route::put('/posts/{post:id}', [PostController::class, 'update'])->middleware(AuthorMiddleware::class);
     Route::delete('/posts/{post:id}', [PostController::class, 'destroy'])->middleware(AuthorMiddleware::class);
+
+    // crud for comments
+    Route::post('/comment/{post:id}', [CommentController::class, 'store']);
+    Route::put('/comment/{comment:id}', [CommentController::class, 'update']);
+    Route::delete('/comment/{comment:id}', [CommentController::class, 'destroy']);
 });
