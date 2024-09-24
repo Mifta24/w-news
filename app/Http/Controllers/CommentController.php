@@ -19,7 +19,7 @@ class CommentController extends Controller
         $request['user_id'] = auth()->user()->id;
         $post->comments()->create($request->all());
 
-        return new PostResource($post->loadMissing('author:id,username', 'comments:id,user_id,comments_content'));
+        return new PostResource($post->loadMissing('author:id,username', 'comments'));
     }
 
     public function update(Request $request, Comment $comment)

@@ -20,7 +20,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'news_content' => $this->news_content,
             'author' => $this->whenLoaded('author'),
-            'comments'=> $this->whenLoaded('comments', function () {
+            'comments'=> $this->whenLoaded('comments',function(){
                 return $this->comments->loadMissing('user:id,username');
             }),
             'created_at' => $this->created_at,

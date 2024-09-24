@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with('comments:id,post_id,user_id,comments_content', 'author:id,username')->get();
 
         // JSON Response
         // return response()->json(['data' => $posts], 200);
