@@ -18,9 +18,10 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'image' => $this->image,
             'news_content' => $this->news_content,
             'author' => $this->whenLoaded('author'),
-            'comments'=> $this->whenLoaded('comments',function(){
+            'comments' => $this->whenLoaded('comments', function () {
                 return $this->comments->loadMissing('user:id,username');
             }),
             'created_at' => $this->created_at,

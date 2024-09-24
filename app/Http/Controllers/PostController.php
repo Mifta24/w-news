@@ -25,15 +25,33 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        // Validasi input
+        $validated = $request->validate([
             'title' => 'required',
             'news_content' => 'required',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
         ]);
-        $request['author_id'] = auth()->user()->id;
-        $post = Post::create($request->all());
 
+        // Cek apakah ada file yang diupload
+        if ($request->hasFile('image')) {
+            // Simpan file gambar ke dalam folder 'images' di storage publik
+            $imagePath = $request->file('image')->store('images', 'public');
+            $validated['image'] = $imagePath;
+        } else {
+            // Jika tidak ada gambar yang diupload, gunakan gambar default
+            $validated['image'] = 'images/default.png';
+        }
+
+        // Set author_id dengan ID pengguna yang sedang login
+        $validated['author_id'] = auth()->user()->id;
+
+        // Simpan data post ke dalam database
+        $post = Post::create($validated);
+
+        // Kembalikan response dengan PostResource dan memuat relasi author
         return new PostResource($post->loadMissing('author:id,username'));
     }
+
 
     public function update(Request $request, Post $post)
     {
